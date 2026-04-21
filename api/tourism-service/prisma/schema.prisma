@@ -11,3 +11,17 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model TourismPlace {
+id Int @id @default(autoincrement())
+name String
+description String
+category String
+isIndoor Boolean
+latitude Float
+longitude Float
+rating Float
+imageUrl String? // penting untuk frontend
+createdAt DateTime @default(now())
+}
+
