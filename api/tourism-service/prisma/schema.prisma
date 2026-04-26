@@ -11,3 +11,15 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model TourismPlace {
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(100)
+  description String   @db.Text
+  isIndoor    Boolean
+  latitude    Float
+  longitude   Float
+  rating      Float    @default(0)
+  imageUrl    String?  @db.VarChar(255)
+  createdAt   DateTime @default(now())
+}
