@@ -105,109 +105,117 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // ================= GRID LIST =================
   Widget _buildList() {
-  return Padding(
-    padding: EdgeInsets.all(12),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Rekomendasi Wisata",
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Color(0xFF1B3C59),
-          ),
-        ),
-
-        SizedBox(height: 10),
-
-        Expanded(
-          child: GridView.builder(
-            itemCount: dummyPlaces.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3, // 🔥 JADI 3
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              childAspectRatio: 0.9, // 🔥 disesuaikan biar ga gepeng
-            ),
-            itemBuilder: (context, index) {
-              final place = dummyPlaces[index];
-
-              return Container(
-                decoration: BoxDecoration(
-                  color: Color(0xFF2D6A9F),
-                  borderRadius: BorderRadius.circular(15),
+    return Padding(
+      padding: const EdgeInsets.all(12),
+      child: Column(
+        children: [
+          // 🔥 HEADER: Maksa judul di tengah pakai teknik Row + Expanded
+          Row(
+            children: [
+              // Tombol Back di kiri
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    isStarted = false;
+                  });
+                },
+                icon: const Icon(
+                  Icons.arrow_back,
+                  color: Color(0xFF1B3C59),
+                  size: 28,
                 ),
-                child: Column(
-                  children: [
-                    // 🔥 GAMBAR
-                    ClipRRect(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(15),
-                      ),
-                      child: Image.network(
-                        place.imageUrl,
-                        height: 80,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            height: 80,
-                            color: Colors.grey[300],
-                            child: Icon(Icons.image, size: 30),
-                          );
-                        },
-                      ),
+              ),
+              
+              // Ini kuncinya: Expanded + Center biar teksnya makan ruang sisa dan di tengah
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.only(right: 48), // Angka 48 ini lebar IconButton supaya center-nya presisi
+                  child: const Text(
+                    "Rekomendasi Wisata",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF1B3C59),
                     ),
+                  ),
+                ),
+              ),
+            ],
+          ),
 
-                    SizedBox(height: 6),
+          const SizedBox(height: 15),
 
-                    // 🔥 NAMA (dibikin kecil biar muat)
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 6),
-                      child: Text(
-                        place.name,
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
+          Expanded(
+            child: GridView.builder(
+              itemCount: dummyPlaces.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                childAspectRatio: 0.7, // Disesuaikan biar card-nya cakep di layar
+              ),
+              itemBuilder: (context, index) {
+                final place = dummyPlaces[index];
+
+                return Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF2D6A9F),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Column(
+                    children: [
+                      // GAMBAR
+                      ClipRRect(
+                        borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+                        child: Image.network(
+                          place.imageUrl,
+                          height: 70,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) => 
+                            Container(height: 70, color: Colors.grey[300], child: const Icon(Icons.image)),
                         ),
                       ),
-                    ),
 
-                    Spacer(),
+                      const SizedBox(height: 4),
 
-                    // 🔥 BUTTON KECIL
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 6),
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 5),
-                          backgroundColor: Colors.white,
-                          foregroundColor: Color(0xFF2D6A9F),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                        ),
+                      // NAMA
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
                         child: Text(
-                          "Detail",
-                          style: TextStyle(fontSize: 10),
+                          place.name,
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              );
-            },
+
+                      const Spacer(),
+
+                      // TOMBOL
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: const Color(0xFF2D6A9F),
+                            minimumSize: const Size(60, 25),
+                            padding: EdgeInsets.zero,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                          ),
+                          child: const Text("Detail", style: TextStyle(fontSize: 9)),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
-        ),
-      ],
-    ),
-  );
-}
+        ],
+      ),
+    );
+  }
 }
