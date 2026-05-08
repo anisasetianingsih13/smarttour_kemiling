@@ -8,16 +8,20 @@ export class TourismService {
   constructor(private prisma: PrismaService) {}
   async create(createTourismDto: CreateTourismDto) {
     return await this.prisma.tourismPlace.create({
-    data: createTourismDto,
-  });
+      data: createTourismDto,
+    });
   }
 
   async findAll() {
     return await this.prisma.tourismPlace.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} tourism`;
+  async findOne(id: number) {
+    return await this.prisma.tourismPlace.findUnique({
+      where: {
+        id,
+      },
+    });
   }
 
   update(id: number, updateTourismDto: UpdateTourismDto) {
