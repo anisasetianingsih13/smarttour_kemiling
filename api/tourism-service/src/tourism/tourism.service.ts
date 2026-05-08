@@ -6,8 +6,10 @@ import { UpdateTourismDto } from './dto/update-tourism.dto';
 @Injectable()
 export class TourismService {
   constructor(private prisma: PrismaService) {}
-  create(createTourismDto: CreateTourismDto) {
-    return 'This action adds a new tourism';
+  async create(createTourismDto: CreateTourismDto) {
+    return await this.prisma.tourismPlace.create({
+    data: createTourismDto,
+  });
   }
 
   async findAll() {
