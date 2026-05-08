@@ -33,7 +33,11 @@ export class TourismService {
     });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} tourism`;
+  async remove(id: number) {
+    return await this.prisma.tourismPlace.delete({
+      where: {
+        id,
+      },
+    });
   }
 }
