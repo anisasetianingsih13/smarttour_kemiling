@@ -24,8 +24,13 @@ export class TourismService {
     });
   }
 
-  update(id: number, updateTourismDto: UpdateTourismDto) {
-    return `This action updates a #${id} tourism`;
+  async update(id: number, updateTourismDto: UpdateTourismDto) {
+    return await this.prisma.tourismPlace.update({
+      where: {
+        id,
+      },
+      data: updateTourismDto,
+    });
   }
 
   remove(id: number) {
