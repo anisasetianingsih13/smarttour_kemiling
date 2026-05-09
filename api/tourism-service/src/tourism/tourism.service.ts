@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { CreateTourismDto } from './dto/create-tourism.dto';
 import { UpdateTourismDto } from './dto/update-tourism.dto';
@@ -6,10 +6,20 @@ import { UpdateTourismDto } from './dto/update-tourism.dto';
 @Injectable()
 export class TourismService {
   constructor(private prisma: PrismaService) {}
+
+  // tambah data wisata
   async create(createTourismDto: CreateTourismDto) {
-    return await this.prisma.tourismPlace.create({
+    await this.prisma.tourismPlace.create({
       data: createTourismDto,
     });
+
+    return {
+      success: true,
+      message: 'Data wisata berhasil ditambahkan',
+      metadata: {
+        status: HttpStatus.CREATED,
+      },
+    };
   }
 
   async findAll() {
