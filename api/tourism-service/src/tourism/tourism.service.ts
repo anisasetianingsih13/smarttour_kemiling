@@ -45,13 +45,22 @@ export class TourismService {
     });
   }
 
+  // ubah data wisata
   async update(id: number, updateTourismDto: UpdateTourismDto) {
-    return await this.prisma.tourismPlace.update({
+    await this.prisma.tourismPlace.update({
       where: {
         id,
       },
       data: updateTourismDto,
     });
+
+    return {
+      success: true,
+      message: 'Data wisata berhasil diubah',
+      metadata: {
+        status: HttpStatus.OK,
+      },
+    };
   }
 
   async remove(id: number) {
