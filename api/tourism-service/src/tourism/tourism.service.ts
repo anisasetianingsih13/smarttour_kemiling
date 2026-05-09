@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma.service';
 import { CreateTourismDto } from './dto/create-tourism.dto';
 import { UpdateTourismDto } from './dto/update-tourism.dto';
 import { conflictTourism } from '../common/utils/conflict-tourism.util';
+import { notExistTourism } from '../common/utils/not-exist-tourism.util';
 
 @Injectable()
 export class TourismService {
@@ -50,11 +51,11 @@ export class TourismService {
 
   // detail data wisata berdasarkan id
   async findOne(id: number) {
-    const data = await this.prisma.tourismPlace.findUnique({
-      where: {
-        id,
-      },
-    });
+    const data = await notExistTourism(
+      this.prisma.tourismPlace,
+      id,
+      'Data wisata tidak ditemukan',
+    );
 
     return {
       success: true,
