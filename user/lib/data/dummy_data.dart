@@ -39,7 +39,7 @@ List<TourismPlace> dummyPlaces = [
     isIndoor: true,
     lat: -5.3971,
     lng: 105.2662,
-    description: "Ingin nongkrong di cafe dengan pemandangan di atas bukit? Kamu bisa ke Mountena Coffee.Tak hanya menu camilan seperti aneka gorengan, di sini juga menyediakan menu nasi sebagai makanan beratnya. ", 
+    description: "Ingin nongkrong di cafe dengan pemandangan di atas bukit? Kamu bisa ke Mountena Coffee.Tak hanya menu camilan seperti aneka gorengan, di sini juga menyediakan menu nasi sebagai makanan beratnya.", 
   ),
   TourismPlace(
     name: "Kopi Kenangan Kemiling",
@@ -49,7 +49,7 @@ List<TourismPlace> dummyPlaces = [
     isIndoor: true,
     lat: -5.3971,
     lng: 105.2662,
-    description: "Beberapa menu signaturenya tentu harus kamu coba seperti Kopi Kenangan Mantan (kopi susu gula aren), Salted Caramel Macchiato, Susu Boba Gula Aren, Kopi Kelapa, dan dessert Banana Chocolate Bread. ", 
+    description: "Beberapa menu signaturenya tentu harus kamu coba seperti Kopi Kenangan Mantan (kopi susu gula aren), Salted Caramel Macchiato, Susu Boba Gula Aren, Kopi Kelapa, dan dessert Banana Chocolate Bread.", 
   ),
   TourismPlace(
     name: "Sky Garden Cafe and Resto",
@@ -59,7 +59,7 @@ List<TourismPlace> dummyPlaces = [
     isIndoor: true,
     lat: -5.3971,
     lng: 105.2662,
-    description: "Hampir semua tempat makannya outdoor atau semi outdoor. Sehingga kamu bisa mendapat sejuknya angin malam dari atas bukit sambil mendengan live music. Mereka juga menyediakan fasilitas untuk kegiatan outing kelompok seperti panggung dan proyektor. ", 
+    description: "Hampir semua tempat makannya outdoor atau semi outdoor. Sehingga kamu bisa mendapat sejuknya angin malam dari atas bukit sambil mendengan live music. Mereka juga menyediakan fasilitas untuk kegiatan outing kelompok seperti panggung dan proyektor.", 
   ),
   TourismPlace(
     name: " Jenggala Coffee and Brew",
@@ -69,7 +69,7 @@ List<TourismPlace> dummyPlaces = [
     isIndoor: true,
     lat: -5.3971,
     lng: 105.2662,
-    description: "Cafe ini memiliki ruang outdoor cukup luas untuk makan ditempat. Untuk menu makanannya tersedia aneka ricebowl, mie, dan camilan. Sedangkan minumannya ada kopi, nonkopi, dan mocktail. ", 
+    description: "Cafe ini memiliki ruang outdoor cukup luas untuk makan ditempat. Untuk menu makanannya tersedia aneka ricebowl, mie, dan camilan. Sedangkan minumannya ada kopi, nonkopi, dan mocktail.", 
   ),
   TourismPlace(
     name: "Bukit Sakura",
