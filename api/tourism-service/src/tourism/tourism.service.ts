@@ -2,6 +2,7 @@ import { HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { CreateTourismDto } from './dto/create-tourism.dto';
 import { UpdateTourismDto } from './dto/update-tourism.dto';
+import { conflictTourism } from '../common/utils/conflict-tourism.util';
 
 @Injectable()
 export class TourismService {
@@ -9,8 +10,18 @@ export class TourismService {
 
   // tambah data wisata
   async create(createTourismDto: CreateTourismDto) {
+    // validasi nama tourism
+    const normalizeName = await conflictTourism(
+      this.prisma.tourismPlace,
+      'Nama wisata sudah digunakan',
+      createTourismDto.name,
+    );
+
     await this.prisma.tourismPlace.create({
-      data: createTourismDto,
+      data: {
+        ...createTourismDto,
+        name: normalizeName,
+      },
     });
 
     return {
