@@ -10,10 +10,13 @@ export const conflictTourism = async (
   name: string,
   id?: number,
 ) => {
+  // normalisasi nama
+  const normalizeName = name.replace(/\s/g, '').toLowerCase().trim();
+
   // cek apakah nama tourism sudah ada
   const exist = await prisma.findFirst({
     where: {
-      name: name,
+      name: normalizeName,
 
       // pengecualian saat update data
       ...(id ? { NOT: { id: id } } : undefined),
@@ -31,5 +34,5 @@ export const conflictTourism = async (
     });
   }
 
-  return name;
+  return normalizeName;
 };
