@@ -87,9 +87,15 @@ export class TourismService {
 
   // hapus data wisata
   async remove(id: number) {
+    await notExistTourism(
+      this.prisma.tourismPlace,
+      id,
+      'Data wisata tidak ditemukan',
+    );
+
     await this.prisma.tourismPlace.delete({
       where: {
-        id,
+        id: id,
       },
     });
 
