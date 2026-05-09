@@ -11,17 +11,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool isStarted = false;
-  // List untuk menampung data yang akan ditampilkan
   List<TourismPlace> filteredPlaces = [];
 
   @override
   void initState() {
     super.initState();
-    // Awal buka, tampilkan semua data
     filteredPlaces = dummyPlaces;
   }
 
-  // Fungsi simulasi filter berdasarkan cuaca
   void _getRecommendation(String kondisiCuaca) {
     setState(() {
       if (kondisiCuaca == "Hujan") {
@@ -83,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 30),
             ElevatedButton.icon(
-              onPressed: () => _getRecommendation("Hujan"), // Simulasi Hujan
+              onPressed: () => _getRecommendation("Hujan"),
               icon: const Icon(Icons.location_on),
               label: const Text("Gunakan Lokasi Saya"),
               style: ElevatedButton.styleFrom(
@@ -101,144 +98,131 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // ================= 2. REKOMENDASI LIST =================
   Widget _buildList() {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: Column(
-          children: [
-            // HEADER BAR
-            Row(
-              children: [
-                IconButton(
-                  onPressed: () => setState(() => isStarted = false),
-                  icon: const Icon(Icons.arrow_back, color: Color(0xFF1B3C59)),
+  return SafeArea(
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      child: Column(
+        children: [
+          // HEADER
+          Row(
+            children: [
+              IconButton(
+                onPressed: () => setState(() => isStarted = false),
+                icon: const Icon(Icons.arrow_back, color: Color(0xFF1B3C59)),
+              ),
+              const Expanded(
+                child: Text(
+                  "Rekomendasi Wisata",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1B3C59)),
                 ),
-                const Expanded(
-                  child: Text(
-                    "Rekomendasi Wisata",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1B3C59)),
-                  ),
-                ),
-                const SizedBox(width: 48), // Penyeimbang IconButton
-              ],
-            ),
+              ),
+              const SizedBox(width: 48),
+            ],
+          ),
 
-            // BANNER INFO CUACA
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 10),
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.blue[50],
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.blue.shade100),
+          // GRID DATA
+          Expanded(
+            child: GridView.builder(
+              itemCount: filteredPlaces.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
+                childAspectRatio: 0.65, // 🔥 Diperkecil angkanya supaya kartu lebih panjang ke bawah
               ),
-              child: Row(
-                children: [
-                  const Icon(Icons.cloudy_snowing, color: Colors.blue),
-                  const SizedBox(width: 10),
-                  const Expanded(
-                    child: Text(
-                      "Cuaca Hujan: Menampilkan tempat indoor",
-                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF1B3C59)),
-                    ),
+              itemBuilder: (context, index) {
+                final place = filteredPlaces[index];
+                return Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 8,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-
-            // GRID DATA
-            Expanded(
-              child: GridView.builder(
-                padding: const EdgeInsets.only(bottom: 20),
-                itemCount: filteredPlaces.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
-                  childAspectRatio: 0.78,
-                ),
-                itemBuilder: (context, index) {
-                  final place = filteredPlaces[index];
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
-                          blurRadius: 8,
-                          offset: const Offset(0, 4),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // 🔥 BAGIAN GAMBAR (GANTI KE Image.asset)
+                      ClipRRect(
+                        borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+                        child: Image.asset( // <--- WAJIB Image.asset
+                          place.imageUrl,
+                          height: 100,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          // 🔥 Kalau masih gagal, munculkan ikon error biar kita tahu
+                          errorBuilder: (context, error, stackTrace) {
+                            print("Error loading image: $error"); // Cek di Debug Console
+                            return Container(
+                              height: 100,
+                              color: Colors.grey[200],
+                              child: const Icon(Icons.broken_image, color: Colors.red),
+                            );
+                          },
                         ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // GAMBAR
-                        ClipRRect(
-                          borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
-                          child: Image.network(
-                            place.imageUrl,
-                            height: 100,
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) => Container(
-                              height: 100, color: Colors.grey[200], child: const Icon(Icons.image),
+                      ),
+                      
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              place.name,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                             ),
-                          ),
-                        ),
-                        // INFO TEKS
-                        Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                place.name,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Color(0xFF1B3C59)),
-                              ),
-                              const SizedBox(height: 4),
-                              Row(
-                                children: [
-                                  const Icon(Icons.star, color: Colors.amber, size: 14),
-                                  const SizedBox(width: 4),
-                                  Text(place.rating.toString(), style: const TextStyle(fontSize: 12)),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Spacer(),
-                        // TOMBOL DETAIL
-                        Align(
-                          alignment: Alignment.bottomRight,
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 8, bottom: 8),
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFFD9822B),
-                                foregroundColor: Colors.white,
-                                minimumSize: const Size(60, 28),
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
-                              ),
-                              child: const Text("DETAIL", style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold)),
+                            const SizedBox(height: 5),
+                            // DESKRIPSI (Dibatasi 3 baris biar rapi)
+                            Text(
+                              place.description,
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(fontSize: 10, color: Colors.grey),
                             ),
+                            const SizedBox(height: 5),
+                            Row(
+                              children: [
+                                const Icon(Icons.star, color: Colors.amber, size: 14),
+                                const SizedBox(width: 4),
+                                Text(place.rating.toString(), style: const TextStyle(fontSize: 12)),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Spacer(),
+                      // TOMBOL DETAIL
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFFD9822B),
+                              minimumSize: const Size(60, 25),
+                            ),
+                            child: const Text("DETAIL", style: TextStyle(fontSize: 9)),
                           ),
                         ),
-                      ],
-                    ),
-                  );
-                },
-              ),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
 }
