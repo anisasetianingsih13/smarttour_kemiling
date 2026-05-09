@@ -1,23 +1,19 @@
-import { NotFoundException } from '@nestjs/common/exceptions/not-found.exception';
-import { HttpStatus } from '@nestjs/common/enums/http-status.enum';
-
 import { PrismaService } from '../../prisma.service';
+import { HttpStatus, NotFoundException } from '@nestjs/common';
 
-// pengecekan data tourism
+// buat fungsi untuk pengecekan data tourism
 export const notExistTourism = async (
   prisma: PrismaService['tourismPlace'],
   id: number,
   message: string,
 ) => {
-  // cek data tourism berdasarkan id
-  const exist = await prisma.findFirst({
-    where: {
-      id: id,
-    },
+  // tampilkan data tourism berdasarkan id
+  const data = await prisma.findUnique({
+    where: { id: id },
   });
 
   // jika data tidak ditemukan
-  if (!exist) {
+  if (!data) {
     throw new NotFoundException({
       success: false,
       message: message,
@@ -27,5 +23,5 @@ export const notExistTourism = async (
     });
   }
 
-  return exist;
+  return data;
 };
