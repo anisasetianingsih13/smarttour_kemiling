@@ -69,9 +69,15 @@ export class TourismService {
 
   // ubah data wisata
   async update(id: number, updateTourismDto: UpdateTourismDto) {
+    await notExistTourism(
+      this.prisma.tourismPlace,
+      id,
+      'Data wisata tidak ditemukan',
+    );
+
     await this.prisma.tourismPlace.update({
       where: {
-        id,
+        id: id,
       },
       data: updateTourismDto,
     });
