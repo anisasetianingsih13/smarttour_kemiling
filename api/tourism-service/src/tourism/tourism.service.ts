@@ -22,8 +22,19 @@ export class TourismService {
     };
   }
 
+  // tampil semua data wisata
   async findAll() {
-    return await this.prisma.tourismPlace.findMany();
+    const data = await this.prisma.tourismPlace.findMany();
+
+    return {
+      success: true,
+      message: 'Data wisata berhasil ditampilkan',
+      metadata: {
+        status: HttpStatus.OK,
+        total_data: data.length,
+      },
+      data: data,
+    };
   }
 
   async findOne(id: number) {
