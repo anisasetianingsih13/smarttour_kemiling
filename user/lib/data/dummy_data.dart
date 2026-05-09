@@ -81,14 +81,4 @@ List<TourismPlace> dummyPlaces = [
     lng: 105.2550,
     description: "Destinasi wisata keluarga dengan tema unik ala Jepang di Lampung. Pengunjung dapat menikmati keindahan bunga sakura buatan, menyewa kimono, dan melihat pemandangan seluruh kota Bandar Lampung dari atas bukit.",
   ),
-  TourismPlace(
-    name: "Taman Kupu-Kupu Gita Persada",
-    category: "Edukasi",
-    rating: 4.7,
-    imageUrl: "assets/images/wisata/taman_kupu.png",
-    isIndoor: false,
-    lat: -5.4050,
-    lng: 105.2400,
-    description: "Taman konservasi yang didekasikan untuk perlindungan berbagai jenis kupu-kupu khas Lampung. Tempat wisata edukasi yang sejuk dan asri, sangat cocok untuk memperkenalkan alam kepada anak-anak.",
-  ),
 ];
