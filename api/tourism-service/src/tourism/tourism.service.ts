@@ -37,12 +37,22 @@ export class TourismService {
     };
   }
 
+  // detail data wisata berdasarkan id
   async findOne(id: number) {
-    return await this.prisma.tourismPlace.findUnique({
+    const data = await this.prisma.tourismPlace.findUnique({
       where: {
         id,
       },
     });
+
+    return {
+      success: true,
+      message: 'Detail data wisata berhasil ditampilkan',
+      metadata: {
+        status: HttpStatus.OK,
+      },
+      data: data,
+    };
   }
 
   // ubah data wisata
