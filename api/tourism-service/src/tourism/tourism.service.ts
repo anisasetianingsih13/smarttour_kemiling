@@ -73,11 +73,20 @@ export class TourismService {
     };
   }
 
+  // hapus data wisata
   async remove(id: number) {
-    return await this.prisma.tourismPlace.delete({
+    await this.prisma.tourismPlace.delete({
       where: {
         id,
       },
     });
+
+    return {
+      success: true,
+      message: 'Data wisata berhasil dihapus',
+      metadata: {
+        status: HttpStatus.OK,
+      },
+    };
   }
 }
