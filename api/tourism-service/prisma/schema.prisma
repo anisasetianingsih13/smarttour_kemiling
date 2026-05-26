@@ -16,7 +16,7 @@ datasource db {
 model TourismPlace {
   id          Int      @id @default(autoincrement())
   name        String   @db.VarChar(100)
-  nameFilter  String   @db.VarChar(100)
+  nameFilter String @default("") @db.VarChar(100)
   description String   @db.Text
   isIndoor    Boolean
   latitude    Float
