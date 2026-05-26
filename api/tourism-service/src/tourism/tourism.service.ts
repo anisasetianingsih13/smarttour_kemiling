@@ -1,4 +1,9 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { CreateTourismDto } from './dto/create-tourism.dto';
 import { UpdateTourismDto } from './dto/update-tourism.dto';
@@ -52,20 +57,34 @@ export class TourismService {
 
   // detail data wisata berdasarkan id
   async findOne(id: number) {
-    const data = await notExistTourism(
-      this.prisma.tourismPlace,
-      id,
-      'Data wisata tidak ditemukan',
-    );
+    try {
+      const data = await notExistTourism(
+        this.prisma.tourismPlace,
+        id,
+        'Data wisata tidak ditemukan',
+      );
 
-    return {
-      success: true,
-      message: 'Detail data wisata berhasil ditampilkan',
-      metadata: {
-        status: HttpStatus.OK,
-      },
-      data: data,
-    };
+      return {
+        success: true,
+        message: 'Detail data wisata berhasil ditampilkan',
+        metadata: {
+          status: HttpStatus.OK,
+        },
+        data: data,
+      };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+
+      throw new BadRequestException({
+        success: false,
+        message: 'Parameter / Slug ID Harus Angka !',
+        metadata: {
+          status: HttpStatus.BAD_REQUEST,
+        },
+      });
+    }
   }
 
   // ubah data wisata
