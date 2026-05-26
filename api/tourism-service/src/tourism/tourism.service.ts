@@ -77,9 +77,12 @@ export class TourismService {
       'Data wisata tidak ditemukan',
     );
 
+    // data update default
+    let nameFilter: string | undefined = undefined;
+
     // jika nama diubah maka validasi duplicate
     if (updateTourismDto.name) {
-      updateTourismDto.name = await conflictTourism(
+      nameFilter = await conflictTourism(
         this.prisma.tourismPlace,
         'Nama wisata sudah digunakan',
         updateTourismDto.name,
@@ -91,7 +94,10 @@ export class TourismService {
       where: {
         id: id,
       },
-      data: updateTourismDto,
+      data: {
+        ...updateTourismDto,
+        ...(nameFilter ? { nameFilter: nameFilter } : {}),
+      },
     });
 
     return {
