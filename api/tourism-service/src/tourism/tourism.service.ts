@@ -87,45 +87,55 @@ export class TourismService {
     }
   }
 
-  // ubah data wisata
   async update(id: number, updateTourismDto: UpdateTourismDto) {
-    // cek data ada atau tidak
-    await notExistTourism(
-      this.prisma.tourismPlace,
-      id,
-      'Data wisata tidak ditemukan',
-    );
-
-    // data update default
-    let nameFilter: string | undefined = undefined;
-
-    // jika nama diubah maka validasi duplicate
-    if (updateTourismDto.name) {
-      nameFilter = await conflictTourism(
+    try {
+      // cek data ada atau tidak
+      await notExistTourism(
         this.prisma.tourismPlace,
-        'Nama wisata sudah digunakan',
-        updateTourismDto.name,
         id,
+        'Data wisata tidak ditemukan',
       );
+
+      // validasi name filter
+      const nameFilter = updateTourismDto.name
+        ? await conflictTourism(
+            this.prisma.tourismPlace,
+            'Nama wisata sudah digunakan',
+            updateTourismDto.name,
+            id,
+          )
+        : undefined;
+
+      await this.prisma.tourismPlace.update({
+        where: {
+          id: id,
+        },
+        data: {
+          ...updateTourismDto,
+          ...(nameFilter ? { nameFilter: nameFilter } : {}),
+        },
+      });
+
+      return {
+        success: true,
+        message: 'Data wisata berhasil diubah',
+        metadata: {
+          status: HttpStatus.OK,
+        },
+      };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+
+      throw new BadRequestException({
+        success: false,
+        message: 'Parameter / Slug ID Harus Angka !',
+        metadata: {
+          status: HttpStatus.BAD_REQUEST,
+        },
+      });
     }
-
-    await this.prisma.tourismPlace.update({
-      where: {
-        id: id,
-      },
-      data: {
-        ...updateTourismDto,
-        ...(nameFilter ? { nameFilter: nameFilter } : {}),
-      },
-    });
-
-    return {
-      success: true,
-      message: 'Data wisata berhasil diubah',
-      metadata: {
-        status: HttpStatus.OK,
-      },
-    };
   }
 
   // hapus data wisata
