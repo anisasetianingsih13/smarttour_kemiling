@@ -99,7 +99,7 @@ export class TourismService {
       });
     }
   }
-
+  //update data
   async update(id: number, updateTourismDto: UpdateTourismDto) {
     try {
       // cek data ada atau tidak
@@ -113,7 +113,7 @@ export class TourismService {
       const nameFilter = updateTourismDto.name
         ? await conflictTourism(
             this.prisma.tourismPlace,
-            'Nama wisata sudah digunakan',
+            process.env.FAILED_UPDATE!,
             updateTourismDto.name,
             id,
           )
@@ -131,7 +131,7 @@ export class TourismService {
 
       return {
         success: true,
-        message: 'Data wisata berhasil diubah',
+        message: process.env.SUCCESS_UPDATE,
         metadata: {
           status: HttpStatus.OK,
         },
