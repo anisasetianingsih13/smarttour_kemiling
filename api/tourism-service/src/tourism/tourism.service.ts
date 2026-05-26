@@ -12,7 +12,7 @@ export class TourismService {
   // tambah data wisata
   async create(createTourismDto: CreateTourismDto) {
     // validasi nama tourism
-    const normalizeName = await conflictTourism(
+    const nameFilter = await conflictTourism(
       this.prisma.tourismPlace,
       'Nama wisata sudah digunakan',
       createTourismDto.name,
@@ -21,7 +21,8 @@ export class TourismService {
     await this.prisma.tourismPlace.create({
       data: {
         ...createTourismDto,
-        name: normalizeName,
+        name: createTourismDto.name,
+        nameFilter: nameFilter,
       },
     });
 
