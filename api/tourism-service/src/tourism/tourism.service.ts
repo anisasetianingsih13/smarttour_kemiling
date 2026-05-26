@@ -16,28 +16,42 @@ export class TourismService {
 
   // tambah data wisata
   async create(createTourismDto: CreateTourismDto) {
-    // validasi nama tourism
-    const nameFilter = await conflictTourism(
-      this.prisma.tourismPlace,
-      'Nama wisata sudah digunakan',
-      createTourismDto.name,
-    );
+    try {
+      // validasi nama tourism
+      const nameFilter = await conflictTourism(
+        this.prisma.tourismPlace,
+        'Nama wisata sudah digunakan',
+        createTourismDto.name,
+      );
 
-    await this.prisma.tourismPlace.create({
-      data: {
-        ...createTourismDto,
-        name: createTourismDto.name,
-        nameFilter: nameFilter,
-      },
-    });
+      await this.prisma.tourismPlace.create({
+        data: {
+          ...createTourismDto,
+          name: createTourismDto.name,
+          nameFilter: nameFilter,
+        },
+      });
 
-    return {
-      success: true,
-      message: 'Data wisata berhasil ditambahkan',
-      metadata: {
-        status: HttpStatus.CREATED,
-      },
-    };
+      return {
+        success: true,
+        message: 'Data wisata berhasil ditambahkan',
+        metadata: {
+          status: HttpStatus.CREATED,
+        },
+      };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+
+      throw new BadRequestException({
+        success: false,
+        message: 'Data wisata gagal ditambahkan',
+        metadata: {
+          status: HttpStatus.BAD_REQUEST,
+        },
+      });
+    }
   }
 
   // tampil semua data wisata
