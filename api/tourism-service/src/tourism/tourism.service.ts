@@ -140,24 +140,38 @@ export class TourismService {
 
   // hapus data wisata
   async remove(id: number) {
-    await notExistTourism(
-      this.prisma.tourismPlace,
-      id,
-      'Data wisata tidak ditemukan',
-    );
+    try {
+      await notExistTourism(
+        this.prisma.tourismPlace,
+        id,
+        'Data wisata tidak ditemukan',
+      );
 
-    await this.prisma.tourismPlace.delete({
-      where: {
-        id: id,
-      },
-    });
+      await this.prisma.tourismPlace.delete({
+        where: {
+          id: id,
+        },
+      });
 
-    return {
-      success: true,
-      message: 'Data wisata berhasil dihapus',
-      metadata: {
-        status: HttpStatus.OK,
-      },
-    };
+      return {
+        success: true,
+        message: 'Data wisata berhasil dihapus',
+        metadata: {
+          status: HttpStatus.OK,
+        },
+      };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+
+      throw new BadRequestException({
+        success: false,
+        message: 'Parameter / Slug ID Harus Angka !',
+        metadata: {
+          status: HttpStatus.BAD_REQUEST,
+        },
+      });
+    }
   }
 }
