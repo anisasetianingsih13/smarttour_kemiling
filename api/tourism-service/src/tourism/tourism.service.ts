@@ -17,10 +17,9 @@ export class TourismService {
   // tambah data wisata
   async create(createTourismDto: CreateTourismDto) {
     try {
-      // validasi nama tourism
       const nameFilter = await conflictTourism(
         this.prisma.tourismPlace,
-        'Nama wisata sudah digunakan',
+        process.env.FAILED_SAVE!,
         createTourismDto.name,
       );
 
@@ -34,7 +33,7 @@ export class TourismService {
 
       return {
         success: true,
-        message: 'Data wisata berhasil ditambahkan',
+        message: process.env.SUCCESS_SAVE,
         metadata: {
           status: HttpStatus.CREATED,
         },
@@ -46,7 +45,7 @@ export class TourismService {
 
       throw new BadRequestException({
         success: false,
-        message: 'Data wisata gagal ditambahkan',
+        message: process.env.FAILED_CREATE,
         metadata: {
           status: HttpStatus.BAD_REQUEST,
         },
