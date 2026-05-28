@@ -29,7 +29,7 @@ export default function EditWisataPage() {
     const fetchData = async () => {
       try {
         const res = await api.get(`/tourism/${id}`);
-        const d = res.data;
+        const d = res.data?.data || res.data;
         setForm({
           name: d.name || '',
           category: d.category || '',

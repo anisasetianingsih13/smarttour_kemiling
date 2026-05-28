@@ -25,9 +25,9 @@ export default function WisataPage() {
   const fetchWisata = async () => {
     try {
       const res = await api.get('/tourism');
-      setWisata(res.data);
+      setWisata(res.data?.data || []);
     } catch {
-      setError('Gagal memuat data wisata. Pastikan Gateway berjalan di port 3003.');
+      setError('Gagal memuat data wisata. Pastikan Backend berjalan di port 3001.');
     } finally {
       setLoading(false);
     }
